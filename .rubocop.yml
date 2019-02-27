@@ -1,0 +1,10 @@
+Rails:
+  Enabled: true
+Style/AsciiComments:
+  Enabled: false
+Style/Lambda:
+  Enabled: false
+Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
