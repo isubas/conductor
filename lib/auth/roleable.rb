@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Auth
-  module Rolable
+  module Roleable
     def self.included(base)
       base.send :include, InstanceMethods
       base.extend ClassMethods

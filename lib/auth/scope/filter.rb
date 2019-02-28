@@ -4,7 +4,7 @@ module Auth
   module Scope
     module Filter
       def filter(attribute, **options)
-        exist!(attribute)
+        # exist!(attribute)
         filters[attribute] = options
       end
 
@@ -17,10 +17,6 @@ module Auth
       end
 
       private
-
-      def model
-        to_s.delete_suffix('Scope').constantize
-      end
 
       def exist!(attribute)
         raise StandardError, attribute unless model.columns_hash.key?(attribute.to_s)

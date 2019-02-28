@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Auth::Rolable
+  include Auth::Roleable
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

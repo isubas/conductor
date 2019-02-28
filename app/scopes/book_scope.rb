@@ -5,7 +5,7 @@ class BookScope < ApplicationScope
                 type: Array,
                 presence: true,
                 multiple: true,
-                empty_skip: true
+                skip_empty: true
 
-  filter :desc
+  filter :desc, skip_empty: true
 end

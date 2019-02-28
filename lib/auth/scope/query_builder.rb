@@ -3,25 +3,33 @@
 module Auth
   module Scope
     class QueryBuilder
-      attr_reader :scope_class, :values, :query
-
-      def initialize(scope_class, values)
-        @scope_class = scope_class
-        @values = values
-        @query = {}
+      def initialize(instance)
+        @instance = instance
+        @klass    = instance.class
       end
 
       def build
-        mapping
+        klass.filter_attributes.each_with_object({}) do |filter, object|
+          value = values[filter.to_s]
+          object[filter] = value if assignable?(filter, value)
+        end
       end
 
       private
 
-      def mapping
-        scope_class.filter_attributes.each_with_object({}) do |item, object|
-          binding.pry
-          object[item] = values[item.to_s]
-        end
+      attr_reader :instance, :klass
+
+      def assignable?(filter, value)
+        return value.present? if klass.filters[filter].fetch(:skip_empty, false)
+
+        true
+      end
+
+      def values
+        @values ||= AuthScope.find_by(
+          name: klass.to_s,
+          user_id: instance.user.id
+        ).try(:values) || {}
       end
     end
   end

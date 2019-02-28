@@ -3,7 +3,7 @@
 class AuthorScope < ApplicationScope
   filter :first_name, type: :string,
                       presence: true,
-                      empty_skip: true
+                      skip_empty: true
   filter :last_name, type: :string,
                      presence: true,
                      skip_empty: true

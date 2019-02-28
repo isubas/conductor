@@ -14,13 +14,13 @@ module Auth
 
       def fields
         filters.map do |attribute, options|
-          generete_form_field(attribute, options)
+          generate_form_field(attribute, options)
         end
       end
 
       private
 
-      def generete_form_field(attribute, options)
+      def generate_form_field(attribute, options)
         collection = options.fetch(:collection, [])
 
         Field.new(
