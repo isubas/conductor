@@ -11,22 +11,24 @@ module Auth
       end
 
       module ClassMethods
-        def auth_scope_for(*)
-          where(query)
+        def auth_scope(user)
+          where(
+            query(user)
+          )
         end
 
         private
 
-        def scope_klass
-          @scope_klass ||= "#{name}Scope".constantize
+        def _scope_klass
+          @_scope_klass ||= "#{name}Scope".constantize
         end
 
-        def find_values(*)
-          scope_klass.condition_attributes.map { |key, _| [key, 'Foo'] }.to_h
+        def find_values(user)
+          AuthScope.find_by(name: _scope_klass.to_s, user_id: user.id).try(:values) || {}
         end
 
-        def query
-          Auth::Scope::QueryBuilder.new(scope_klass, find_values).build
+        def query(user)
+          Auth::Scope::QueryBuilder.new(_scope_klass, find_values(user)).build
         end
       end
     end

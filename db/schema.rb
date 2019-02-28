@@ -10,13 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_27_191628) do
+ActiveRecord::Schema.define(version: 2019_02_28_101511) do
 
   create_table "actions", force: :cascade do |t|
     t.string "name"
     t.string "controller"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "auth_scopes", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id"
+    t.text "values"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_auth_scopes_on_user_id"
   end
 
   create_table "authors", force: :cascade do |t|
@@ -69,6 +78,7 @@ ActiveRecord::Schema.define(version: 2019_02_27_191628) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "auth_scopes", "users"
   add_foreign_key "permission_actions", "actions"
   add_foreign_key "permission_actions", "permissions"
 end

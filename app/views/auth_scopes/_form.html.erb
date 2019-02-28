@@ -1,0 +1,12 @@
+<%= simple_form_for auth_scope do |f| %>
+  <%= f.input :name, collection: ApplicationScope.descendants %>
+  <%= f.association :user, label_method: :email %>
+  <% auth_scope.scope_klass.fields.each do |field| %>
+    <%= f.input field.name,
+                as: field.as,
+                collection: field.collection,
+                required: field.required,
+                input_html: { multiple: field.multiple } %>
+  <% end %>
+  <%= f.button :submit %>
+<% end %>

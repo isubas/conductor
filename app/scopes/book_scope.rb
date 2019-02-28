@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class BookScope < ApplicationScope
-  condition :name, collection: Book.all,
-                   type: Array,
-                   presence: true,
-                   empty_skip: true
+  filter :name, collection: Book.pluck(:name),
+                type: Array,
+                presence: true,
+                multiple: true,
+                empty_skip: true
 
-  # condition :foo
+  filter :desc
 end

@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-require_relative './condition'
+require_relative './filter'
+require_relative './form'
 
 module Auth
   module Scope
     class Base
-      include Condition
+      extend Filter
+      extend Form
     end
   end
 end
