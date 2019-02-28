@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
 require_relative './auth/roleable'
-require_relative './auth/limiter'
+require_relative './auth/scope'
