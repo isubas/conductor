@@ -14,7 +14,7 @@ class AuthScopesController < ApplicationController
 
   # GET /auth_scopes/new
   def new
-    @auth_scope = AuthScope.new(name: 'BookScope')
+    @auth_scope = AuthScope.new(name: 'AuthorScope')
   end
 
   # GET /auth_scopes/1/edit
@@ -70,6 +70,8 @@ class AuthScopesController < ApplicationController
 
   def auth_scope_params
     @auth_scope ||= AuthScope.new(name: params[:auth_scope][:name])
-    params.require(:auth_scope).permit(:name, :user_id, *@auth_scope.auth_store_accessors, name_value: [])
+    params.require(:auth_scope).permit(
+      :name, :user_id, *@auth_scope.permited_attributes_for_values
+    )
   end
 end

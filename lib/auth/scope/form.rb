@@ -9,6 +9,7 @@ module Auth
         :collection,
         :required,
         :multiple,
+        :hint,
         keyword_init: true
       )
 
@@ -28,8 +29,15 @@ module Auth
           as: collection.present? ? :select : options.fetch(:field_type, :string),
           collection: collection,
           required: options.fetch(:presence, false),
-          multiple: options.fetch(:multiple, false)
+          multiple: options.fetch(:multiple, false),
+          hint: hint(options)
         )
+      end
+
+      def hint(options)
+        return '' unless options.fetch(:skip_empty, false)
+
+        'Boş bırakılırsa sorguya dahil edilmez!'
       end
     end
   end

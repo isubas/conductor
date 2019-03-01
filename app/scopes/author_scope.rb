@@ -6,6 +6,6 @@ class AuthorScope < ApplicationScope
                       skip_empty: true
   filter :last_name, type: :string,
                      presence: true,
-                     skip_empty: true
+                     skip_empty: false
   filter :email
 end
