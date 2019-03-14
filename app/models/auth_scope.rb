@@ -8,6 +8,6 @@ class AuthScope < ApplicationRecord
   store :values, coder: JSON
 
   def scope_klass
-    "#{name}".constantize
+    name.to_s.constantize
   end
 end

@@ -17,7 +17,6 @@
       <tr>
         <td><%= auth_scope.name %></td>
         <td><%= auth_scope.user.try(:email) %></td>
-        <td><%= auth_scope.values %></td>
         <td><%= link_to 'Show', auth_scope %></td>
         <td><%= link_to 'Edit', edit_auth_scope_path(auth_scope) %></td>
         <td><%= link_to 'Destroy', auth_scope, method: :delete, data: { confirm: 'Are you sure?' } %></td>

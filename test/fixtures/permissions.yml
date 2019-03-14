@@ -3,9 +3,9 @@
 one:
   name: MyString
   identifier: MyString
-  desc: MyText
+  description: MyText
 
 two:
   name: MyString
   identifier: MyString
-  desc: MyText
+  description: MyText

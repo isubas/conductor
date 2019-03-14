@@ -10,10 +10,14 @@
   <%= @auth_scope.user_id %>
 </p>
 
-<p>
-  <strong>Values:</strong>
-  <%= @auth_scope.values %>
-</p>
+<ul>
+  <% @auth_scope.auth_store_accessors.each do |accessor| %>
+    <li>
+      <strong><%= accessor %>:</strong>
+      <%= @auth_scope.send(accessor) %>
+    </li>
+  <% end %>
+</ul>
 
 <%= link_to 'Edit', edit_auth_scope_path(@auth_scope) %> |
 <%= link_to 'Back', auth_scopes_path %>

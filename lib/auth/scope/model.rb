@@ -9,13 +9,13 @@ module Auth
 
       module ClassMethods
         def auth_scope(user)
-          _scope_klass.new(user).scope
+          scope_klass.new(user).scope
         end
 
         private
 
-        def _scope_klass
-          @_scope_klass ||= "#{name}Scope".constantize
+        def scope_klass
+          @_scope_klass ||= "#{name}Scope".safe_constantize
         end
       end
     end

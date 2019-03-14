@@ -9,10 +9,8 @@ module Auth
         model.where(query)
       end
 
-      private
-
       def query
-        QueryBuilder.new(self).build
+        @query ||= QueryBuilder.new(self).build
       end
     end
   end

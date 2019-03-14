@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AuthScopesController < ApplicationController
-  before_action :set_auth_scope, only: [:show, :edit, :update, :destroy]
+  before_action :set_auth_scope, only: %i[show edit update destroy]
 
   # GET /auth_scopes
   # GET /auth_scopes.json
@@ -9,17 +11,15 @@ class AuthScopesController < ApplicationController
 
   # GET /auth_scopes/1
   # GET /auth_scopes/1.json
-  def show
-  end
+  def show; end
 
   # GET /auth_scopes/new
   def new
-    @auth_scope = AuthScope.new(name: 'AuthorScope')
+    @auth_scope = AuthScope.new(name: 'BookScope')
   end
 
   # GET /auth_scopes/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /auth_scopes
   # POST /auth_scopes.json

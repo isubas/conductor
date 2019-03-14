@@ -3,6 +3,8 @@
 module Auth
   module Scope
     class QueryBuilder
+      attr_reader :instance, :klass
+
       def initialize(instance)
         @instance = instance
         @klass    = instance.class
@@ -17,18 +19,15 @@ module Auth
 
       private
 
-      attr_reader :instance, :klass
-
       def assignable?(filter, value)
-        return value.present? if klass.filters[filter].fetch(:skip_empty, false)
+        return value.present? if klass.filters[filter].skip_empty
 
         true
       end
 
       def values
         @values ||= AuthScope.find_by(
-          name: klass.to_s,
-          user_id: instance.user.id
+          name: klass.to_s, user_id: instance.user.id
         ).try(:values) || {}
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include Auth::Roleable
   # Include default devise modules. Others available are:

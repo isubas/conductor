@@ -1,0 +1,28 @@
+<div class="shadow p-3 mb-5 bg-white rounded">
+  <%= link_to_new 'New Permission', new_permission_path %>
+</div>
+
+<h1 class="text-center">Permissions</h1>
+<hr>
+
+<table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Identifier</th>
+      <th scope="col" colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @permissions.each do |permission| %>
+      <tr>
+        <td><%= permission.name %></td>
+        <td><%= permission.identifier %></td>
+        <td>
+          <%= link_to_actions(permission) %>
+        </td>
+    <% end %>
+  </tbody>
+</table>
+

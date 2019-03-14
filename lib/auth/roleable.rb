@@ -2,25 +2,13 @@
 
 module Auth
   module Roleable
-    def self.included(base)
-      base.send :include, InstanceMethods
-      base.extend ClassMethods
-    end
+    extend ActiveSupport::Concern
 
-    module ClassMethods
-      def scope_by(*)
-        puts 'Test'
-      end
-    end
-
-    module InstanceMethods
-      def permitted?(*)
-        puts 'permitted?'
-      end
-
-      def permitted!(*)
-        puts 'permitted!'
-      end
+    included do
+      has_many :role_assignments, dependent: :destroy
+      has_many :roles, through: :role_assignments
+      has_many :permissions, through: :roles
+      has_many :actions, through: :permissions
     end
   end
 end

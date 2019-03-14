@@ -14,28 +14,39 @@ module Auth
       )
 
       def fields
-        filters.map do |attribute, options|
-          generate_form_field(attribute, options)
+        filters.map do |attribute, option|
+          generate_form_field(attribute, option)
         end
       end
 
       private
 
-      def generate_form_field(attribute, options)
-        collection = options.fetch(:collection, [])
+      def generate_form_field(attribute, option)
+        collection = collection_for(option)
 
         Field.new(
-          name: attribute.to_s + StoreAccessor::SUFFIX_FOR_STORE_ACCESSOR,
-          as: collection.present? ? :select : options.fetch(:field_type, :string),
+          name: attribute_name_prepare(attribute),
+          as: collection.present? ? :select : option.field_type,
           collection: collection,
-          required: options.fetch(:presence, false),
-          multiple: options.fetch(:multiple, false),
-          hint: hint(options)
+          required: option.presence,
+          multiple: option.multiple,
+          hint: hint(option)
         )
       end
 
-      def hint(options)
-        return '' unless options.fetch(:skip_empty, false)
+      def collection_for(option)
+        case option.collection
+        when Proc then option.collection.call
+        when Array then option.collection
+        end
+      end
+
+      def attribute_name_prepare(attribute)
+        attribute.to_s + StoreAccessor::SUFFIX_FOR_STORE_ACCESSOR
+      end
+
+      def hint(option)
+        return '' unless option.skip_empty
 
         'Boş bırakılırsa sorguya dahil edilmez!'
       end

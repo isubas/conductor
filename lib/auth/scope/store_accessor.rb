@@ -19,7 +19,7 @@ module Auth
           @permited_attributes_for_values ||= begin
             _scope_klass.filters.each_with_object([]) do |(key, option), attributes|
               key = _store_accessor_key_for(key)
-              attributes << (option.fetch(:multiple, false) ? { key => [] } : key)
+              attributes << (option.multiple ? { key => [] } : key)
             end
           end
         end

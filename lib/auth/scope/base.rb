@@ -13,10 +13,12 @@ module Auth
 
       attr_reader :user
 
-      protected
+      def self.model
+        to_s.delete_suffix('Scope').safe_constantize
+      end
 
       def model
-        self.class.to_s.delete_suffix('Scope').constantize
+        self.class.model
       end
     end
   end

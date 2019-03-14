@@ -11,16 +11,47 @@
 
   <body>
 
+  <nav class="navbar navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">DEMOOOOO</a>
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarText"
+            aria-controls="navbarText"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <span class="navbar-text">
+        Demo
+      </span>
+    </div>
+  </nav>
+
   <% if user_signed_in? %>
-    <li>
-      <%= link_to("Logout - #{current_user.email}", destroy_user_session_path, method: :delete) %>
-    </li>
+    <li><%= link_to("Logout - #{current_user.email}", destroy_user_session_path, method: :delete) %></li>
   <% else %>
-    <li>
-      <%= link_to('Login', new_user_session_path)  %>
-    </li>
+    <li><%= link_to('Login', new_user_session_path) %></li>
   <% end %>
 
-    <%= yield %>
+  <div class="row">
+    <div class="col-sm-3">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <%= link_to 'Books', books_path %>
+      </li>
+      <li class="list-group-item">
+        <%= link_to 'Dashboard', dashboard_path %>
+      </li>
+      <li class="list-group-item">
+        <%= link_to 'Scope', auth_scopes_path %>
+      </li>
+    </ul>
+    </div>
+    <div class="col-sm-9">
+      <%= yield %>
+    </div>
+  </div>
   </body>
 </html>
