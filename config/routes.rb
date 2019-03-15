@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :permissions
   resources :controller_actions
   resources :auth_scopes
-  root 'books#index'
+  root 'home#index'
   resources :books
   resources :actions
 

@@ -2,6 +2,7 @@
 
 class AuthScopesController < ApplicationController
   before_action :set_auth_scope, only: %i[show edit update destroy]
+  before_action :authorize
 
   # GET /auth_scopes
   # GET /auth_scopes.json

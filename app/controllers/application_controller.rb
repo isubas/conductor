@@ -3,7 +3,6 @@
 class ApplicationController < ActionController::Base
   include Auth::Controller
   before_action :authenticate_user!
-  before_action :authorize
 
   rescue_from Auth::Controller::NotAuthorizedError, with: :not_authorized
 
