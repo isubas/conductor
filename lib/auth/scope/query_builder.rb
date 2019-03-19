@@ -11,13 +11,36 @@ module Auth
       end
 
       def build
+        results = {
+          queries: [],
+          values: {}
+        }
+
+        values.each_with_index do |value, index|
+          hash = to_hash(value)
+          next if hash.blank?
+
+          results[:queries] << to_query(hash, suffix: index)
+          results[:values].merge!(hash.transform_keys { |key| "#{key}#{index}".to_sym })
+        end
+        results
+      end
+
+      private
+
+      def to_hash(scope_value)
         klass.filter_attributes.each_with_object({}) do |filter, object|
-          value = values[filter.to_s]
+          value = scope_value[filter.to_s]
           object[filter] = value if assignable?(filter, value)
         end
       end
 
-      private
+      def to_query(hash, suffix: '')
+        hash.each_with_object([]) do |value, object|
+          key = value.first
+          object << "#{key} = :#{key}#{suffix}"
+        end.join(' AND ')
+      end
 
       def assignable?(filter, value)
         return value.present? if klass.filters[filter].skip_empty
@@ -26,9 +49,9 @@ module Auth
       end
 
       def values
-        @values ||= AuthScope.find_by(
+        @values ||= AuthScope.where(
           name: klass.to_s, user_id: instance.user.id
-        ).try(:values) || {}
+        ).pluck(:values)
       end
     end
   end
