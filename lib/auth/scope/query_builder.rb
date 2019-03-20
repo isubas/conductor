@@ -1,8 +1,11 @@
 # frozen_string_literal: true
+require_relative 'utils/arel'
 
 module Auth
   module Scope
     class QueryBuilder
+      include Utils::Arel
+
       attr_reader :instance, :klass
 
       def initialize(instance)
@@ -11,41 +14,37 @@ module Auth
       end
 
       def build
-        results = {
-          queries: [],
-          values: {}
-        }
-
-        values.each_with_index do |value, index|
+        queries = values.each_with_object([]) do |value, object|
           hash = to_hash(value)
           next if hash.blank?
 
-          results[:queries] << to_query(hash, suffix: index)
-          results[:values].merge!(hash.transform_keys { |key| "#{key}#{index}".to_sym })
+          object << to_query(hash)
         end
-        results
+
+        merge(queries, with: :or)
       end
 
       private
 
-      def to_hash(scope_value)
-        klass.filter_attributes.each_with_object({}) do |filter, object|
-          value = scope_value[filter.to_s]
-          object[filter] = value if assignable?(filter, value)
+      def to_query(hash)
+        queries = hash.each_with_object([]) do |item, object|
+          object << generate_arel_node(*item)
         end
-      end
 
-      def to_query(hash, suffix: '')
-        hash.each_with_object([]) do |value, object|
-          key = value.first
-          object << "#{key} = :#{key}#{suffix}"
-        end.join(' AND ')
+        merge(queries, with: :and)
       end
 
       def assignable?(filter, value)
         return value.present? if klass.filters[filter].skip_empty
 
         true
+      end
+
+      def to_hash(scope_value)
+        klass.filter_attributes.each_with_object({}) do |filter, object|
+          value = scope_value[filter.to_s]
+          object[filter] = value if assignable?(filter, value)
+        end
       end
 
       def values
