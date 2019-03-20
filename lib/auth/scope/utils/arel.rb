@@ -4,7 +4,7 @@ module Auth
   module Scope
     module Utils
       module Arel
-        PREDICATES = %i[
+        PREDICATES = %w[
           in
           eq
         ].freeze
@@ -20,7 +20,7 @@ module Auth
 
         PREDICATES.each do |predicate|
           define_method(predicate) do |key, value|
-            table[key].in(value)
+            table[key].public_send(predicate, value)
           end
         end
 
@@ -30,7 +30,7 @@ module Auth
           current_query = queries.delete(queries.first)
 
           queries.each do |query|
-            current_query = current_query.send(with.to_s, query)
+            current_query = current_query.public_send(with.to_s, query)
           end
           current_query
         end
