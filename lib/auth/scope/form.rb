@@ -13,11 +13,17 @@ module Auth
         keyword_init: true
       )
 
-      def fields
+      AREL_PREDICATES = {
+        select: %i[in],
+        text: %i[eq gt lt],
+        string: %i[eq gt lt]
+      }.freeze
+
+      def form_fields
         filters.map do |attribute, option|
           {
-            value_field: generate_field_for_value(attribute, option),
-            query_type_field: generate_field_for_query_type(attribute)
+            value: generate_field_for_value(attribute, option),
+            query_type: generate_field_for_query_type(attribute, option)
           }
         end
       end
@@ -28,7 +34,7 @@ module Auth
         collection = collection_for(option)
 
         Field.new(
-          name: attribute.to_s + StoreAccessor::SUFFIX_FOR_VALUE_ACCESSOR,
+          name: attribute.to_s + StoreAccessor::Value::SUFFIX_FOR_VALUE_ACCESSOR,
           as: collection.present? ? :select : option.field_type,
           collection: collection,
           required: option.presence,
@@ -37,19 +43,26 @@ module Auth
         )
       end
 
-      def generate_field_for_query_type(attribute)
+      def generate_field_for_query_type(attribute, option)
+        collection = collection_for(option)
+
+        type = collection.present? ? :select : option.field_type
+
         Field.new(
-          name: attribute.to_s + StoreAccessor::SUFFIX_FOR_QUERY_TYPE_ACCESSOR,
+          name: attribute.to_s + StoreAccessor::QueryType::SUFFIX_FOR_QUERY_TYPE_ACCESSOR,
           as: :select,
-          collection: Utils::Arel::PREDICATES,
+          collection: AREL_PREDICATES[type],
           required: true
         )
       end
 
       def collection_for(option)
-        case option.collection
-        when Proc then option.collection.call
-        when Array then option.collection
+        if option.collection.respond_to?(:call)
+          option.collection.call
+        elsif option.collection.is_a?(Array)
+          option.collection
+        else
+          []
         end
       end
 

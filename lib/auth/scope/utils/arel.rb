@@ -7,15 +7,12 @@ module Auth
         PREDICATES = %w[
           in
           eq
+          gt
+          lt
         ].freeze
 
-        def generate_arel_node(key, value)
-          case value
-          when Array then self.in(key, value)
-          when String then eq(key, value)
-          else
-            raise 'Arel'
-          end
+        def generate_arel_node(key:, value:, predicate:)
+          public_send(predicate, key, value)
         end
 
         PREDICATES.each do |predicate|
@@ -27,12 +24,7 @@ module Auth
         private
 
         def merge(queries, with:)
-          current_query = queries.delete(queries.first)
-
-          queries.each do |query|
-            current_query = current_query.public_send(with.to_s, query)
-          end
-          current_query
+          queries.inject { |current_query, query| current_query.public_send(with.to_s, query) }
         end
 
         def table

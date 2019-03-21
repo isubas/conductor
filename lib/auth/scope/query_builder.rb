@@ -14,25 +14,19 @@ module Auth
       end
 
       def build
-        queries = values.each_with_object([]) do |value, object|
-          hash = to_hash(value)
-          next if hash.blank?
+        queries = values.map do |value|
+          normalized_values = normalize(value)
 
-          object << to_query(hash)
-        end
+          next if normalized_values.blank?
+
+          normalized_values.map { |data| generate_arel_node(data) }
+                           .then { |nodes| merge(nodes, with: :and) }
+        end.compact
 
         merge(queries, with: :or)
       end
 
       private
-
-      def to_query(hash)
-        queries = hash.each_with_object([]) do |item, object|
-          object << generate_arel_node(*item)
-        end
-
-        merge(queries, with: :and)
-      end
 
       def assignable?(filter, value)
         return value.present? if klass.filters[filter].skip_empty
@@ -40,11 +34,18 @@ module Auth
         true
       end
 
-      def to_hash(scope_value)
-        klass.filter_attributes.each_with_object({}) do |filter, object|
+      def normalize(scope_value)
+        klass.filter_attributes.map do |filter|
           value = scope_value[filter.to_s]
-          object[filter] = value if assignable?(filter, value)
-        end
+
+          next unless assignable?(filter, value)
+
+          {
+            key: filter,
+            value: value,
+            predicate: scope_value["#{filter}_query_type"]
+          }
+        end.compact
       end
 
       def values

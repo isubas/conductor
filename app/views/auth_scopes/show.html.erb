@@ -11,7 +11,7 @@
 </p>
 
 <ul>
-  <% @auth_scope.auth_store_accessors.each do |accessor| %>
+  <% @auth_scope.accessors.each do |accessor| %>
     <li>
       <strong><%= accessor %>:</strong>
       <%= @auth_scope.send(accessor) %>

@@ -14,6 +14,7 @@ module Auth
 
       def filter(attribute, **options)
         exist!(attribute)
+
         filters[attribute] = build_option(options)
       end
 

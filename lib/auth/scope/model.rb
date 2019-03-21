@@ -8,8 +8,8 @@ module Auth
       end
 
       module ClassMethods
-        def auth_scope(user)
-          scope_klass.new(user).scope
+        def auth_scope(user, pass: false)
+          scope_klass.new(user).scope(pass: pass)
         end
 
         private
