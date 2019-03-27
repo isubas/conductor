@@ -19,14 +19,14 @@ module Auth
 
     included do
       def authorize
-        return if exist_controller_action_exist?
+        return if controller_action_exist?
 
         raise NotAuthorizedError.new(action: action_name, controller: controller_name)
       end
 
       private
 
-      def exist_controller_action_exist?
+      def controller_action_exist?
         current_user.actions.exists?(
           action: action_name,
           controller: controller_name
