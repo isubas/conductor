@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'query_builder'
-
 module Auth
   module Scope
     module Query
@@ -12,7 +10,7 @@ module Auth
       end
 
       def query
-        @query ||= QueryBuilder.new(self).build
+        @query ||= Querier::Builder.new(self).build
       end
     end
   end

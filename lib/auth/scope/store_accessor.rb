@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'store_accessor/value'
 require_relative 'store_accessor/query_type'
 
@@ -31,7 +32,7 @@ module Auth
         private
 
         def scope_klass
-          @_scope_klass ||= name.constantize
+          @_scope_klass ||= name.safe_constantize
         end
       end
     end

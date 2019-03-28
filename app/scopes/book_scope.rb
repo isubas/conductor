@@ -4,13 +4,17 @@ class BookScope < ApplicationScope
   filter :id, collection: -> { Book.all },
               multiple: true
 
-  filter :desc, skip_empty: true
+  filter :desc
 
-  define_scope :foo do |a, b|
-    puts 'foo'
+  define_scope :programs do
+    where(name: 'program')
   end
 
-  define_scope :bar do |a, b|
-    puts 'bar'
+  define_scope :faculties do
+    where(name: 'faculty')
+  end
+
+  define_scope :order_by_name do
+    order(:name)
   end
 end

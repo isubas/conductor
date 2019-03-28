@@ -1,16 +1,11 @@
 # frozen_string_literal: true
 
-require_relative './filter'
-require_relative './form'
-require_relative './query'
-require_relative './custom_method'
-
 module Auth
   module Scope
     class Base
-      extend Filter
+      extend DSL::Filter
+      extend DSL::DefineScope
       extend Form
-      extend CustomMethod
       include Query
 
       attr_reader :user
