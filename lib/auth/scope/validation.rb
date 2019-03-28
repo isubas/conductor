@@ -9,9 +9,9 @@ module Auth
         before_validation :set_accessors_validations
 
         def set_accessors_validations
-          scope_klass.filters.each do |key, option|
-            validates_presence_of "#{key}#{StoreAccessor::Value::SUFFIX_FOR_VALUE_ACCESSOR}".to_sym if option.presence
-            validates_presence_of "#{key}#{StoreAccessor::QueryType::SUFFIX_FOR_QUERY_TYPE_ACCESSOR}".to_sym
+          scope_klass.filters.each do |filter, _|
+            validates_presence_of "#{filter}_value".to_sym if public_send("#{filter}_skip_empty").to_i.zero?
+            validates_presence_of "#{filter}_query_type".to_sym
           end
         end
       end

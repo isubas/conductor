@@ -27,12 +27,27 @@ module Auth
         end
 
         class Option
-          attr_reader :collection, :presence, :multiple
+          SUPPORTED_FIELD_TYPES = %i[string select].freeze
+
+          attr_reader :collection, :multiple
 
           def initialize(**args)
             @collection = args.fetch(:collection, proc { [] })
-            @presence   = args.fetch(:presence, true)
             @multiple   = args.fetch(:multiple, false)
+            @field_type = args.fetch(:field_type, :string)
+            check!
+          end
+
+          def field_type
+            collection.call.present? ? :select : @field_type
+          end
+
+          private
+
+          def check!
+            return if SUPPORTED_FIELD_TYPES.include? field_type.to_sym
+
+            raise ArgumentError, "Unsupport field type, supported field types #{SUPPORTED_FIELD_TYPES.join(',')}"
           end
         end
 
