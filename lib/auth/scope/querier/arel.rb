@@ -4,10 +4,14 @@ module Auth
   module Scope
     module Querier
       module Arel
+        mattr_accessor :predicates, default: Set.new
+
         def self.define_predicate(name, **options)
-          predicate = options.fetch(:equivalent, name)
+          predicate = options.fetch(:equivalent_to, name)
           suffix    = options.fetch(:suffix, '')
           prefix    = options.fetch(:prefix, '')
+
+          predicates << name
 
           define_method(name) do |model, attribute, value|
             model.arel_table[attribute].public_send(
@@ -20,18 +24,18 @@ module Auth
 
         define_predicate :in
         define_predicate :not_in
-        define_predicate :equal,                 equivalent: :eq
-        define_predicate :not_equal,             equivalent: :not_eq
-        define_predicate :greater_than,          equivalent: :gt
-        define_predicate :greater_than_to_equal, equivalent: :gteq
-        define_predicate :less_than,             equivalent: :lt
-        define_predicate :less_than_to_equal,    equivalent: :lteq
-        define_predicate :start_matches,         equivalent: :matches, suffix: '%'
-        define_predicate :end_matches,           equivalent: :matches, prefix: '%'
-        define_predicate :full_matches,          equivalent: :matches, suffix: '%', prefix: '%'
-        define_predicate :does_not_start_match,  equivalent: :does_not_match, suffix: '%'
-        define_predicate :does_not_end_match,    equivalent: :does_not_match, prefix: '%'
-        define_predicate :does_not_full_match,   equivalent: :does_not_match, suffix: '%', prefix: '%'
+        define_predicate :equal,                 equivalent_to: :eq
+        define_predicate :not_equal,             equivalent_to: :not_eq
+        define_predicate :greater_than,          equivalent_to: :gt
+        define_predicate :greater_than_to_equal, equivalent_to: :gteq
+        define_predicate :less_than,             equivalent_to: :lt
+        define_predicate :less_than_to_equal,    equivalent_to: :lteq
+        define_predicate :start_with,            equivalent_to: :matches,        suffix: '%'
+        define_predicate :end_with,              equivalent_to: :matches,        prefix: '%'
+        define_predicate :contain,               equivalent_to: :matches,        suffix: '%', prefix: '%'
+        define_predicate :not_start_with,        equivalent_to: :does_not_match, suffix: '%'
+        define_predicate :not_end_with,          equivalent_to: :does_not_match, prefix: '%'
+        define_predicate :not_contain,           equivalent_to: :does_not_match, suffix: '%', prefix: '%'
 
         def self.merge(queries, with:)
           queries.inject do |current_query, query|

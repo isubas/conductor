@@ -9,7 +9,7 @@ module Auth
           @klass    = instance.class
         end
 
-        def build
+        def run
           queries = records.map do |record|
             parameters = build_parameters(record)
             nodes      = parameters.map { |parameter| parameter.to_arel_for(@klass.model) }
@@ -30,7 +30,7 @@ module Auth
           return [] if values.blank?
 
           values.map do |name, options|
-            Parameter.new(name: name, **options.symbolize_keys)
+            Querier::Parameter.new(name: name, **options.symbolize_keys)
           end
         end
 

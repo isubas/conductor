@@ -6,7 +6,6 @@ module Auth
       extend DSL::Filter
       extend DSL::DefineScope
       extend Form
-      include Query
 
       attr_reader :user
 
@@ -14,8 +13,18 @@ module Auth
         to_s.delete_suffix('Scope').safe_constantize
       end
 
+      def scope(bypass: false)
+        return model.all if bypass
+
+        query = Querier::Builder.new(self).run
+
+        @_current_scope = query.present? ? model.where(query) : model.none
+      end
+
+      protected
+
       def model
-        self.class.model
+        @_model ||= self.class.model
       end
 
       def current_scope
