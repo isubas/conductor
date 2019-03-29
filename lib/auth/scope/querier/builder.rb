@@ -4,56 +4,39 @@ module Auth
   module Scope
     module Querier
       class Builder
-        include Arel
-
         def initialize(instance)
           @instance = instance
           @klass    = instance.class
         end
 
         def build
-          queries = values.map do |value|
-            normalized_values = normalize(value)
+          queries = records.map do |record|
+            parameters = build_parameters(record)
+            nodes      = parameters.map { |parameter| parameter.to_arel_for(@klass.model) }
 
-            next if normalized_values.blank?
+            Querier::Arel.merge(nodes.compact, with: :and)
+          end
 
-            normalized_values.map { |data| generate_arel_node(data) }
-                             .then { |nodes| merge(nodes, with: :and) }
-          end.compact
-
-          merge(queries, with: :or)
+          Querier::Arel.merge(queries.compact, with: :or)
         end
 
         private
 
         attr_reader :instance, :klass
 
-        def assignable?(filter, value)
-          return value.present? if klass.filters[filter].skip_empty
+        def build_parameters(record)
+          values = record.values
 
-          true
+          return [] if values.blank?
+
+          values.map do |name, options|
+            Parameter.new(name: name, **options.symbolize_keys)
+          end
         end
 
-        def normalize(scope_value)
-          klass.filter_attributes.map do |filter|
-            value = scope_value[filter.to_s]
-
-            next unless assignable?(filter, value)
-
-            {
-              key: filter,
-              value: value,
-              predicate: scope_value["#{filter}_query_type"]
-            }
-          end.compact
-        end
-
-        def values
-          @values ||= begin
-            AuthScope.find_by(
-              name: klass.to_s,
-              user_id: instance.user.id
-            ).try(:values) || []
+        def records
+          @records ||= begin
+            AuthScope.where(name: klass.to_s, user_id: instance.user.id)
           end
         end
       end

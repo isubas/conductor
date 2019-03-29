@@ -7,7 +7,7 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    @books = Book.auth_scope(current_user, bypass: current_user.id == 1)
+    @books = Book.auth_scope(current_user, bypass: false)
   end
 
   # GET /books/1

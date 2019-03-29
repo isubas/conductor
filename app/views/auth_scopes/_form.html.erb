@@ -1,26 +1,20 @@
 <%= simple_form_for auth_scope do |f| %>
   <%= f.input :name, collection: ApplicationScope.descendants %>
   <%= f.association :user, label_method: :email %>
-  <% auth_scope.scope_klass.form_fields.each do |field| %>
-    <% field_for_value      = field[:value] %>
-    <% field_for_query_type = field[:query_type] %>
+  <% auth_scope.scope_klass.fields_for_form.each do |field_group| %>
+
+
     <div class="card mb-2 px-3 py-3">
       <div class="row">
-        <div class="col-sm-3">
-          <%= f.input field_for_query_type.name.to_sym,
-                      as: field_for_query_type.as,
-                      collection: field_for_query_type.collection,
-                      include_blank: false %>
-        </div>
-
-        <div class="col-sm-9">
-          <%= f.input field_for_value.name.to_sym,
-                      as: field_for_value.as,
-                      collection: field_for_value.collection,
-                      required: field_for_value.required,
-                      hint: field_for_value.hint,
-                      input_html: { multiple: field_for_value.multiple } %>
-        </div>
+        <% field_group.each do |field| %>
+          <div class="col-sm-4">
+            <%= f.input field.name,
+                        as: field.as,
+                        collection: field.collection,
+                        required: field.required,
+                        input_html: { multiple: field.multiple } %>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>

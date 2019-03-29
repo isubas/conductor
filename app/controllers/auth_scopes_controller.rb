@@ -72,7 +72,7 @@ class AuthScopesController < ApplicationController
   def auth_scope_params
     @auth_scope ||= AuthScope.new(name: params[:auth_scope][:name])
     params.require(:auth_scope).permit(
-      :name, :user_id, *@auth_scope.permitted_attributes_for_store_accessors
+      :name, :user_id, *@auth_scope.permitted_attributes.to_a
     )
   end
 end

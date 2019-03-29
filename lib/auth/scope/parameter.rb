@@ -3,21 +3,14 @@
 module Auth
   module Scope
     class Parameter
-      include ActiveModel::Validations
-
       ATTRIBUTES = %i[
-        index
         name
         query_type
+        skip_empty
         value
       ].freeze
 
       attr_accessor(*ATTRIBUTES)
-
-      validates :index,      numericality: { greater_than_or_equal_to: 0 }
-      validates :name,       presence: true
-      validates :query_type, inclusion: { in: %w[in eq gt] }
-      validates :value,      presence: true
 
       def initialize(args = {})
         ATTRIBUTES.each do |attribute|
@@ -25,17 +18,15 @@ module Auth
         end
       end
 
-      def to_hash
-        {
-          index => {
-            name: name,
-            query_type: query_type,
-            value: value
-          }
-        }
+      def to_arel_for(model)
+        Querier::Arel.send(query_type, model, name, value) if assignable?
       end
 
-      alias to_h to_hash
+      private
+
+      def assignable?
+        value.present? || skip_empty.to_i.zero?
+      end
     end
   end
 end
