@@ -6,8 +6,8 @@ module Auth
       module Accessor
         extend ActiveSupport::Concern
 
-        mattr_accessor :accessors,            default: Set.new([])
-        mattr_accessor :permitted_attributes, default: Set.new([])
+        mattr_accessor :accessors,            default: Set.new
+        mattr_accessor :permitted_attributes, default: Set.new
 
         ACCESSORS_SUFFIXES = %w[
           value

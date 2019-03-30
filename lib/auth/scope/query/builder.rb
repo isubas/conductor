@@ -9,20 +9,26 @@ module Auth
           @klass    = instance.class
         end
 
-        def run
+        def self.call(instance)
+          new(instance).send(:build)
+        end
+
+        private_class_method :new
+
+        private
+
+        attr_reader :instance, :klass
+
+        def build
           queries = records.map do |record|
             parameters = build_parameters(record)
-            nodes      = parameters.map { |parameter| parameter.to_arel_for(@klass.model) }
+            nodes      = parameters.map { |parameter| parameter.to_arel_for(klass.model) }
 
             Query::Arel.merge(nodes.compact, with: :and)
           end
 
           Query::Arel.merge(queries.compact, with: :or)
         end
-
-        private
-
-        attr_reader :instance, :klass
 
         def build_parameters(record)
           values = record.values

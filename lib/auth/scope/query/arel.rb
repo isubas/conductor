@@ -15,7 +15,7 @@ module Auth
 
           define_method(name) do |model, attribute, value|
             model.arel_table[attribute].public_send(
-              predicate, sanitize_value(predicate, value, suffix, prefix)
+              predicate, format_and_sanitize_value(predicate, value, suffix, prefix)
             )
           end
 
@@ -43,7 +43,7 @@ module Auth
           end
         end
 
-        def self.sanitize_value(predicate, value, suffix, prefix)
+        def self.format_and_sanitize_value(predicate, value, suffix, prefix)
           case predicate
           when :in, :not_in then [*value].map { |item| ActiveRecord::Base.sanitize_sql(item) }
           when /match/      then [prefix, ActiveRecord::Base.sanitize_sql_like(value), suffix].join

@@ -16,7 +16,7 @@ module Auth
       def scope(bypass: false)
         return model.all if bypass
 
-        query = Query::Builder.new(self).run
+        query = Query::Builder.call(self)
 
         @_current_scope = query.present? ? model.where(query) : model.none
       end
