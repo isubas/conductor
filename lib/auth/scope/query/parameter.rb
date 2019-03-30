@@ -2,7 +2,7 @@
 
 module Auth
   module Scope
-    module Querier
+    module Query
       class Parameter
         ATTRIBUTES = %i[
           name
@@ -20,7 +20,7 @@ module Auth
         end
 
         def to_arel_for(model)
-          Querier::Arel.send(query_type, model, name, value) if assignable?
+          Query::Arel.send(query_type, model, name, value) if assignable?
         end
 
         private

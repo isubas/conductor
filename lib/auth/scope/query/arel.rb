@@ -2,7 +2,7 @@
 
 module Auth
   module Scope
-    module Querier
+    module Query
       module Arel
         mattr_accessor :predicates, default: Set.new
 
@@ -45,9 +45,9 @@ module Auth
 
         def self.sanitize_value(predicate, value, suffix, prefix)
           case predicate
-          when :in     then value
-          when /match/ then [prefix, ActiveRecord::Base.sanitize_sql_like(value), suffix].join
-          else              ActiveRecord::Base.sanitize_sql(value)
+          when :in, :not_in then [*value].map { |item| ActiveRecord::Base.sanitize_sql(item) }
+          when /match/      then [prefix, ActiveRecord::Base.sanitize_sql_like(value), suffix].join
+          else                   ActiveRecord::Base.sanitize_sql(value)
           end
         end
       end

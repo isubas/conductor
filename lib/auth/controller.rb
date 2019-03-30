@@ -10,8 +10,9 @@ module Auth
       def initialize(options = {})
         action     = options[:action]
         controller = options[:controller].titlecase
-
-        message = options.fetch(:message) { "not allowed to #{controller}Controller##{action}" }
+        message    = options.fetch(:message) do
+          "not allowed to #{controller}Controller##{action}"
+        end
 
         super(message)
       end

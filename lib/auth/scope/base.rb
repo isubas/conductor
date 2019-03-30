@@ -5,7 +5,7 @@ module Auth
     class Base
       extend DSL::Filter
       extend DSL::DefineScope
-      extend Form
+      extend View::Form
 
       attr_reader :user
 
@@ -16,7 +16,7 @@ module Auth
       def scope(bypass: false)
         return model.all if bypass
 
-        query = Querier::Builder.new(self).run
+        query = Query::Builder.new(self).run
 
         @_current_scope = query.present? ? model.where(query) : model.none
       end

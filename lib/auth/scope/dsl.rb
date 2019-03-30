@@ -48,7 +48,7 @@ module Auth
                       :multiple
 
           def initialize(**args)
-            @collection = args.fetch(:collection, proc { [] })
+            @collection = collection_to_proc(args)
             @multiple   = args.fetch(:multiple, false)
             @type       = forecast_type(args)
             check!
@@ -70,7 +70,23 @@ module Auth
             end
           end
 
+          def collection?
+            type == :array
+          end
+
           private
+
+          def collection_to_proc(args)
+            collection = args.fetch(:collection, proc { [] })
+
+            case collection
+            when Proc         then collection
+            when Array, Range then proc { collection }
+            else
+              raise ArgumentError, "Unsupported data type (#{collection.class}), "\
+                                   'collection can only be in Array, Range and Proc types'
+            end
+          end
 
           def check!
             return if SUPPORTED_TYPES.include? type.to_sym

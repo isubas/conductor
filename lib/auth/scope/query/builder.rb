@@ -2,7 +2,7 @@
 
 module Auth
   module Scope
-    module Querier
+    module Query
       class Builder
         def initialize(instance)
           @instance = instance
@@ -14,10 +14,10 @@ module Auth
             parameters = build_parameters(record)
             nodes      = parameters.map { |parameter| parameter.to_arel_for(@klass.model) }
 
-            Querier::Arel.merge(nodes.compact, with: :and)
+            Query::Arel.merge(nodes.compact, with: :and)
           end
 
-          Querier::Arel.merge(queries.compact, with: :or)
+          Query::Arel.merge(queries.compact, with: :or)
         end
 
         private
@@ -30,7 +30,7 @@ module Auth
           return [] if values.blank?
 
           values.map do |name, options|
-            Querier::Parameter.new(name: name, **options.symbolize_keys)
+            Query::Parameter.new(name: name, **options.symbolize_keys)
           end
         end
 
