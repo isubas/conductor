@@ -10,7 +10,7 @@ module Auth
           before_validation :set_accessors_validations
 
           def set_accessors_validations
-            scope_klass.filters.each do |filter|
+            scope_klass.filter_attributes.each do |filter|
               validates_presence_of  "#{filter}_value".to_sym unless skip_empty_for?(filter)
               validates_presence_of  "#{filter}_query_type".to_sym
               validates_inclusion_of "#{filter}_skip_empty".to_sym, in: %w[true false]
@@ -18,7 +18,9 @@ module Auth
           end
 
           def skip_empty_for?(filter)
-            public_send("#{filter}_skip_empty") == 'true'
+            ActiveModel::Type::Boolean.new.cast(
+              public_send("#{filter}_skip_empty")
+            )
           end
         end
       end
