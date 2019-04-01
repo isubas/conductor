@@ -10,6 +10,7 @@ module Auth
           :collection,
           :required,
           :multiple,
+          :label,
           keyword_init: true
         )
 
@@ -32,7 +33,8 @@ module Auth
             name: "#{filter}_value",
             as: option.field_type,
             collection: option.collection,
-            multiple: option.multiple
+            multiple: option.multiple,
+            label: label_for(filter, 'value')
           )
         end
 
@@ -40,8 +42,11 @@ module Auth
           Field.new(
             name: "#{filter}_query_type",
             as: :select,
-            collection: arel_predicates_for(option.type),
-            required: true
+            collection: Utils::I18n.translate_collection_for_query_types(
+              arel_predicates_for(option.type)
+            ),
+            required: true,
+            label: label_for(filter, 'query_type')
           )
         end
 
@@ -49,7 +54,8 @@ module Auth
           Field.new(
             name: "#{filter}_skip_empty",
             collection: %w[true false],
-            as: :select
+            as: :select,
+            label: label_for(filter, 'skip_empty')
           )
         end
 
@@ -59,6 +65,13 @@ module Auth
           when :string then Query::Arel.predicates.to_a - %i[in not_in]
           else              []
           end
+        end
+
+        def label_for(filter, suffix)
+          [
+            Utils::I18n.translate_filter(filter, class_name: to_s.underscore),
+            Utils::I18n.translate_suffix(suffix)
+          ].join(' - ')
         end
       end
     end

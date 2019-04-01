@@ -19,5 +19,11 @@ module Conductor
     # the framework and any gems in your application.
 
     config.eager_load_paths << Rails.root.join('lib')
+
+    # default language
+    config.i18n.default_locale = :en
+
+    # support Turkish and English as locales
+    I18n.available_locales = %i[tr en]
   end
 end

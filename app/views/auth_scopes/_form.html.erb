@@ -8,10 +8,12 @@
       <div class="row">
         <% field_group.each do |field| %>
           <div class="col-sm-4">
+            <%= f.label field.name, field.label %>
             <%= f.input field.name,
                         as: field.as,
                         collection: field.collection,
                         required: field.required,
+                        label: false,
                         input_html: { multiple: field.multiple } %>
           </div>
         <% end %>
