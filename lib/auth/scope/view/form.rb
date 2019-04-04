@@ -53,7 +53,9 @@ module Auth
         def generate_field_for_skip_empty(filter)
           Field.new(
             name: "#{filter}_skip_empty",
-            collection: %w[true false],
+            collection: Utils::I18n.translate_collection_for_boolean(
+              %w[true false]
+            ),
             as: :select,
             label: label_for(filter, 'skip_empty')
           )
