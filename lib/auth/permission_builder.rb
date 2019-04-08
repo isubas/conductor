@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Auth
-  class Permission
+  class PermissionBuilder
     class_attribute :all, instance_accessor: false,
                           default: Hash.new { |hash, name| hash[name] = {} }
 
@@ -27,9 +27,13 @@ module Auth
       end
 
       def controller(controller, actions:)
+        actions = actions.compact.map(&:to_sym)
+
+        raise ArgumentError, 'actions cannot be empty' if actions.blank?
+
         tap do
-          permission[controller] = actions
-          all[controller]        = actions
+          permission[controller] = Set.new(actions)
+          all[controller]        = Set.new(actions)
         end
       end
     end
