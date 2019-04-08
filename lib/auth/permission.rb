@@ -1,33 +1,39 @@
 # frozen_string_literal: true
 
 module Auth
-  module PermissionBuilder
-    mattr_accessor :permissions, default: {}
+  class Permission
+    class_attribute :all, instance_accessor: false,
+                          default: Hash.new { |hash, name| hash[name] = {} }
 
-    def permission(name)
-      yield ActionList.of(permission_of(name))
+    def self.permissions
+      @permissions ||= Hash.new { |hash, name| hash[name] = {} }
     end
 
-    def permission_of(name)
-      permissions[name] = {} unless permissions.key?(name)
-      permissions[name]
+    # Example
+    # permission :name_of_permission do |foo|
+    #   foo.controller :controller1, actions: %i[index show]
+    #   foo.controller :controller2, actions: %i[edit update]
+    # end
+    def self.permission(name_of_permission)
+      yield Action.new(self, name_of_permission)
     end
 
-    class ActionList
-      attr_reader :permission
+    class Action
+      attr_reader :permission, :all
 
-      def initialize(permission)
-        @permission = permission
+      def initialize(klass, name_of_permission)
+        @permission = klass.permissions[name_of_permission]
+        @all        = klass.all[name_of_permission]
       end
 
-      def self.of(permission)
-        new(permission)
-      end
-
-      def controller(name, actions:)
-        permission[name] = actions
-        self
+      def controller(controller, actions:)
+        tap do
+          permission[controller] = actions
+          all[controller]        = actions
+        end
       end
     end
+
+    private_constant :Action
   end
 end
