@@ -27,6 +27,10 @@ module Auth
         @_model ||= self.class.model
       end
 
+      def current_user
+        @user ||= current_user
+      end
+
       def current_scope
         @_current_scope ||= model
       end

@@ -3,11 +3,9 @@
 module Auth
   module Scope
     module Model
-      def self.included(base)
-        base.extend ClassMethods
-      end
+      extend ActiveSupport::Concern
 
-      module ClassMethods
+      class_methods do
         def auth_scope(user, bypass: false)
           scope_klass.new(user).scope(bypass: bypass)
         end

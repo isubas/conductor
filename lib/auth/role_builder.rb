@@ -16,14 +16,16 @@ module Auth
       def initialize(name, permissions)
         @name        = name
         @permissions = permissions
+        check!
       end
 
       def actions
         permissions.each_with_object({}) do |permission, result|
-          controllers = Auth::PermissionBuilder.all.fetch(permission, {})
-          controllers.each do |controller, controller_actions|
+          controllers_of_permissions = Auth::PermissionBuilder.find(permission)
+
+          controllers_of_permissions.each do |controller, actions_of_controller|
             result[controller] = Set.new unless result.key?(controller)
-            result[controller].merge(controller_actions)
+            result[controller].merge(actions_of_controller)
           end
         end
       end
@@ -32,9 +34,16 @@ module Auth
         actions.fetch(controller&.to_sym, [])
                .include?(action&.to_sym)
       end
+
+      private
+
+      def check!
+        permissions.each do |permission|
+          Auth::PermissionBuilder.exist!(permission)
+        end
+      end
     end
 
     private_constant :Role
   end
 end
-

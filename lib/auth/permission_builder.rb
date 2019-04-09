@@ -5,17 +5,31 @@ module Auth
     class_attribute :all, instance_accessor: false,
                           default: Hash.new { |hash, name| hash[name] = {} }
 
-    def self.permissions
-      @permissions ||= Hash.new { |hash, name| hash[name] = {} }
-    end
+    class << self
+      def permissions
+        @permissions ||= Hash.new { |hash, name| hash[name] = {} }
+      end
 
-    # Example
-    # permission :name_of_permission do |foo|
-    #   foo.controller :controller1, actions: %i[index show]
-    #   foo.controller :controller2, actions: %i[edit update]
-    # end
-    def self.permission(name_of_permission)
-      yield Action.new(self, name_of_permission)
+      # Example
+      # permission :name_of_permission do |foo|
+      #   foo.controller :controller1, actions: %i[index show]
+      #   foo.controller :controller2, actions: %i[edit update]
+      # end
+      def permission(name_of_permission)
+        yield Action.new(self, name_of_permission)
+      end
+
+      def find(*names)
+        names.inject({}) { |hash, name| hash.merge(all.fetch(name.to_sym, {})) }
+      end
+
+      def exist?(name)
+        all.key?(name.to_sym)
+      end
+
+      def exist!(name)
+        exist?(name) || raise("Not found permission #{name}")
+      end
     end
 
     class Action
