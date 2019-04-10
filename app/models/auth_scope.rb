@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class AuthScope < ApplicationRecord
-  include Auth::Scope::Store::Accessor
-  include Auth::Scope::Store::Validation
+  include Patron::Scope::Store::Accessor
+  include Patron::Scope::Store::Validation
 
   belongs_to :user
 

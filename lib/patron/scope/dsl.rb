@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Auth
+module Patron
   module Scope
     module DSL
       module DefineScope

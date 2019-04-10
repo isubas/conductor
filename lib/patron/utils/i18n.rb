@@ -1,25 +1,25 @@
 # frozen_string_literal: true
 
-module Auth
+module Patron
   module Utils
     module I18n
       module_function
 
       def translate_filter(name, class_name:)
-        translate(name, scope: [:auth, class_name])
+        translate(name, scope: [:patron, class_name])
       end
 
       def translate_suffix(name)
-        translate(name, scope: %i[auth suffixes])
+        translate(name, scope: %i[patron suffixes])
       end
 
       def translate_query_type(name)
-        translate(name, scope: %i[auth query_types])
+        translate(name, scope: %i[patron query_types])
       end
 
       def translate_collection_for_boolean(collection)
         [*collection].map do |item|
-          [translate(item, scope: %i[auth boolean]), item]
+          [translate(item, scope: %i[patron boolean]), item]
         end
       end
 

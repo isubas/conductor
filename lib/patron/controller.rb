@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-module Auth
+module Patron
   module Controller
     extend ActiveSupport::Concern
 
-    class NotAuthorizedError < Auth::Error
+    class NotAuthorizedError < Patron::Error
       attr_reader :controller_action
 
       def initialize(options = {})

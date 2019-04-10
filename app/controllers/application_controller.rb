@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  include Auth::Controller
+  include PatronController
   before_action :authenticate_user!
 
-  rescue_from Auth::Controller::NotAuthorizedError, with: :not_authorized
+  rescue_from PatronController::NotAuthorizedError, with: :not_authorized
 
   private
 

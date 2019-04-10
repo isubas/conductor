@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Auth
+module Patron
   class PermissionBuilder
     class_attribute :all, instance_accessor: false,
                           default: Hash.new { |hash, name| hash[name] = {} }

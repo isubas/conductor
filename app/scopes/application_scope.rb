@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ApplicationScope < Auth::Scope::Base
+class ApplicationScope < PatronScope::Base
   def initialize(user)
     @user = user
   end

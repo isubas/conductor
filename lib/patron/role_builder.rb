@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Auth
+module Patron
   class RoleBuilder
     def self.roles
       @roles ||= {}
@@ -21,7 +21,7 @@ module Auth
 
       def actions
         permissions.each_with_object({}) do |permission, result|
-          controllers_of_permissions = Auth::PermissionBuilder.find(permission)
+          controllers_of_permissions = Patron::PermissionBuilder.find(permission)
 
           controllers_of_permissions.each do |controller, actions_of_controller|
             result[controller] = Set.new unless result.key?(controller)
@@ -39,7 +39,7 @@ module Auth
 
       def check!
         permissions.each do |permission|
-          Auth::PermissionBuilder.exist!(permission)
+          Patron::PermissionBuilder.exist!(permission)
         end
       end
     end

@@ -5,7 +5,7 @@ module Auth
   module Scope
     class ModelTest < ActiveSupport::TestCase
       class DummyModel < ActiveRecord::Base
-        include Auth::Scope::Model
+        include PatronScope::Model
       end
 
       test 'respond_to auth_scope method' do

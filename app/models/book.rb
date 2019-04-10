@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class Book < ApplicationRecord
-  include Auth::Scope::Model
+  include Patron::Scope::Model
 end
