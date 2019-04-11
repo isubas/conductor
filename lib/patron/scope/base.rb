@@ -4,13 +4,17 @@ module Patron
   module Scope
     class Base
       extend DSL::Filter
-      extend DSL::DefineScope
       extend View::Form
-
-      attr_reader :user
 
       def self.model
         to_s.delete_suffix('Scope').safe_constantize
+      end
+
+      attr_reader :user
+
+      def initialize(user, current_scope: nil)
+        @user          = user
+        @current_scope = current_scope
       end
 
       def scope(bypass: false)
@@ -18,7 +22,7 @@ module Patron
 
         query = Query::Builder.call(self)
 
-        @_current_scope = query.present? ? model.where(query) : model.none
+        query.present? ? current_scope.where(query) : model.none
       end
 
       protected
@@ -27,12 +31,8 @@ module Patron
         @_model ||= self.class.model
       end
 
-      def current_user
-        @user ||= current_user
-      end
-
       def current_scope
-        @_current_scope ||= model
+        @current_scope || model
       end
     end
   end

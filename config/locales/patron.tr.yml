@@ -1,5 +1,5 @@
 tr:
-  auth:
+  patron:
     boolean:
       'true': 'Evet'
       'false': 'Hayır'

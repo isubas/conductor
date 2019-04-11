@@ -1,5 +1,5 @@
 <%= simple_form_for auth_scope do |f| %>
-  <%= f.input :name, collection: ApplicationScope.descendants %>
+  <%= f.input :name, collection: Patron::Scope::Base.descendants %>
   <%= f.association :user, label_method: :email %>
   <% auth_scope.scope_klass.fields_for_form.each do |field_group| %>
 

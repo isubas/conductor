@@ -6,8 +6,8 @@ module Patron
       extend ActiveSupport::Concern
 
       class_methods do
-        def auth_scope(user, bypass: false)
-          scope_klass.new(user).scope(bypass: bypass)
+        def scope_for(user, **options)
+          scope_klass.new(user, current_scope: current_scope).scope(options)
         end
 
         private

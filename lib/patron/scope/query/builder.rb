@@ -42,7 +42,7 @@ module Patron
 
         def records
           @records ||= begin
-            AuthScope.where(name: klass.to_s, user_id: instance.current_user&.id)
+            AuthScope.where(name: klass.to_s, user_id: instance.user&.id)
           end
         end
       end
