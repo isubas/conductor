@@ -41,7 +41,7 @@ module Patron
           end
 
           def forecast_type(args)
-            return :array if collection.call.present?
+            return :array unless collection.call.nil?
 
             args.fetch(:type, :string)
           end
@@ -63,7 +63,7 @@ module Patron
           private
 
           def collection_to_proc(args)
-            collection = args.fetch(:collection, proc { [] })
+            collection = args.fetch(:collection, proc { nil })
 
             case collection
             when Proc         then collection

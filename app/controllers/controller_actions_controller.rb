@@ -2,7 +2,6 @@
 
 class ControllerActionsController < ApplicationController
   before_action :set_controller_action, only: %i[show edit update destroy]
-  before_action :authorize
 
   # GET /controller_actions
   # GET /controller_actions.json

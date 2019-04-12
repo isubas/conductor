@@ -2,7 +2,6 @@
 
 class RolesController < ApplicationController
   before_action :set_role, only: %i[show edit update destroy]
-  before_action :authorize
 
   # GET /roles
   # GET /roles.json
@@ -71,6 +70,6 @@ class RolesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def role_params
-    params.require(:role).permit(:name, user_ids: [], permission_ids: [])
+    params.require(:role).permit(:name, :identifier, :locked, permission_ids: [])
   end
 end

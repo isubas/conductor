@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Query Store</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>User</th>
+      <th>Values</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @query_stores.each do |query_store| %>
+      <tr>
+        <td><%= query_store.name %></td>
+        <td><%= query_store.user.try(:email) %></td>
+        <td><%= link_to 'Show', query_store %></td>
+        <td><%= link_to 'Edit', edit_query_store_path(query_store) %></td>
+        <td><%= link_to 'Destroy', query_store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Query Store', new_query_store_path %>

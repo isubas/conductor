@@ -6,8 +6,11 @@ class CreatePermissions < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :identifier
       t.text :description
+      t.boolean :locked, default: false
 
       t.timestamps
     end
+
+    add_index :permissions, :name, unique: true
   end
 end

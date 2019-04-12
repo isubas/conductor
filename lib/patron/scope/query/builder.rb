@@ -31,18 +31,18 @@ module Patron
         end
 
         def build_parameters(record)
-          values = record.values
+          parameters = record.parameters
 
-          return [] if values.blank?
+          return [] if parameters.blank?
 
-          values.map do |name, options|
-            Query::Parameter.new(name: name, **options.symbolize_keys)
+          parameters.map do |key, options|
+            Query::Parameter.new(name: key, **options.symbolize_keys)
           end
         end
 
         def records
           @records ||= begin
-            AuthScope.where(name: klass.to_s, user_id: instance.user&.id)
+            QueryStore.where_or_fetch_cache(name: klass.to_s, user_id: instance.user&.id)
           end
         end
       end

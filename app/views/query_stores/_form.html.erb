@@ -1,7 +1,7 @@
-<%= simple_form_for auth_scope do |f| %>
+<%= simple_form_for query_store do |f| %>
   <%= f.input :name, collection: Patron::Scope::Base.descendants %>
   <%= f.association :user, label_method: :email %>
-  <% auth_scope.scope_klass.fields_for_form.each do |field_group| %>
+  <% query_store.scope_klass.fields_for_form.each do |field_group| %>
 
 
     <div class="card mb-2 px-3 py-3">

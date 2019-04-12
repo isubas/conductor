@@ -8,16 +8,6 @@
   <div class="card-body">
     <p><strong>Identifier:</strong> <%= @permission.identifier %></p>
     <p><strong>Description:</strong> <%= @permission.description %></p>
-    <hr>
-    <h2>Actions</h2>
-
-    <ul class="list-group list-group-flush">
-      <% @permission.actions.each do |action| %>
-        <li class="list-group-item">
-          <%= action.name %>
-        </li>
-      <% end %>
-    </ul>
   </div>
 </div>
 

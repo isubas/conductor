@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @query_store.name %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @query_store.user_id %>
+</p>
+
+<ul>
+  <% @query_store.accessors.each do |accessor| %>
+    <li>
+      <strong><%= accessor %>:</strong>
+      <%= @query_store.send(accessor) %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to 'Edit', edit_query_store_path(@query_store) %> |
+<%= link_to 'Back', query_stores_path %>

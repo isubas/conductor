@@ -2,7 +2,6 @@
 
 class PermissionsController < ApplicationController
   before_action :set_permission, only: %i[show edit update destroy]
-  before_action :authorize
 
   # GET /permissions
   # GET /permissions.json
@@ -71,6 +70,6 @@ class PermissionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def permission_params
-    params.require(:permission).permit(:name, :identifier, :description, action_ids: [])
+    params.require(:permission).permit(:name, :identifier, :description)
   end
 end

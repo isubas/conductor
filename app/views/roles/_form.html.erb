@@ -8,11 +8,15 @@
   </div>
 
   <div class="form-inputs">
-    <%= f.association :permissions %>
+    <%= f.input :identifier %>
   </div>
 
   <div class="form-inputs">
-    <%= f.association :users, label_method: :email %>
+    <%= f.input :locked %>
+  </div>
+
+  <div class="form-inputs">
+    <%= f.association :permissions %>
   </div>
 
   <div class="form-actions">

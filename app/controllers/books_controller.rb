@@ -2,18 +2,16 @@
 
 class BooksController < ApplicationController
   before_action :set_book, only: %i[show edit update destroy]
-  before_action :authorize
 
   # GET /books
   # GET /books.json
   def index
-    @books = Book.auth_scope(current_user, bypass: false)
+    @books = Book.scope_for(current_user, bypass: false)
   end
 
   # GET /books/1
   # GET /books/1.json
-  def show
-  end
+  def show; end
 
   # GET /books/new
   def new

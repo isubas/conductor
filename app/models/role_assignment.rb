@@ -2,5 +2,5 @@
 
 class RoleAssignment < ApplicationRecord
   belongs_to :role
-  belongs_to :user
+  belongs_to :rolable, polymorphic: true
 end

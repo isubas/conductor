@@ -21,11 +21,11 @@ module Patron
             accessors << accessor
 
             # Getter
-            define_singleton_method(accessor) { values_for(filter)[suffix] }
+            define_singleton_method(accessor) { parameters_for(filter)[suffix] }
 
             # Setter
             define_singleton_method("#{accessor}=") do |value|
-              values_for(filter)[suffix] = standardize(value)
+              parameters_for(filter)[suffix] = standardize(value)
             end
           end
 
@@ -33,9 +33,9 @@ module Patron
             value.is_a?(Array) ? value.select(&:present?) : value
           end
 
-          def values_for(accessor)
-            values[accessor] = {} unless values.key?(accessor)
-            values[accessor]
+          def parameters_for(accessor)
+            parameters[accessor] = {} unless parameters.key?(accessor)
+            parameters[accessor]
           end
         end
 
