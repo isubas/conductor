@@ -1,11 +1,9 @@
-<div class="shadow p-3 mb-5 bg-white rounded">
+<%= action_bar do %>
   <%= link_to_edit 'Edit', edit_role_path(@role) %>
   <%= link_to_back 'Back', roles_path %>
-</div>
-
+<% end %>
 <h3 class="text-center"><%= @role.name %></h3>
 <hr>
-
 <div class="card mb-4">
   <h5 class="card-header">Permissions</h5>
   <div class="card-body">
@@ -18,7 +16,6 @@
     </ul>
   </div>
 </div>
-
 <div class="card">
   <h5 class="card-header">Users</h5>
   <div class="card-body">

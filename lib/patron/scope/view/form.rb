@@ -71,7 +71,7 @@ module Patron
 
         def label_for(filter, suffix)
           [
-            Utils::I18n.translate_filter(filter, class_name: to_s.underscore),
+            Utils::I18n.translate_filter(filter, class_name: to_s),
             Utils::I18n.translate_suffix(suffix)
           ].join(' - ')
         end

@@ -6,8 +6,13 @@ module Patron
       module Accessor
         extend ActiveSupport::Concern
 
-        mattr_accessor :accessors,            default: Set.new
-        mattr_accessor :permitted_attributes, default: Set.new
+        def accessors
+          @_accessors ||= Set.new
+        end
+
+        def permitted_attributes
+          @_permitted_attributes ||= Set.new
+        end
 
         ACCESSORS_SUFFIXES = %w[
           value

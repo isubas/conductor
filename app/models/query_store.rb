@@ -24,4 +24,8 @@ class QueryStore < ApplicationRecord
   def scope_klass
     name.to_s.constantize
   end
+
+  def scope_for_preview
+    scope_klass.new(user).scope
+  end
 end

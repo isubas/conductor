@@ -1,8 +1,7 @@
-<div class="shadow p-3 mb-5 bg-white rounded">
+<% action_bar do %>
   <%= link_to_edit 'Edit', edit_permission_path(@permission) %>
   <%= link_to_back 'Back', permissions_path %>
-</div>
-
+<% end %>
 <div class="card">
   <h5 class="card-header"><%= @permission.name %></h5>
   <div class="card-body">
@@ -10,4 +9,3 @@
     <p><strong>Description:</strong> <%= @permission.description %></p>
   </div>
 </div>
-

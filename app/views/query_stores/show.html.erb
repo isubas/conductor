@@ -1,23 +1,52 @@
-<p id="notice"><%= notice %></p>
+<%= action_bar do %>
+  <%= link_to 'Edit', edit_query_store_path(@query_store) %> |
+  <%= link_to 'Back', query_stores_path %>
+<% end %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @query_store.name %>
-</p>
+<h4 class='text-center'><%= @query_store.name %> - <%= @query_store.user.email %></h4>
 
-<p>
-  <strong>User:</strong>
-  <%= @query_store.user_id %>
-</p>
+<%= link_to 'Ön İzleme', preview_query_store_path(@query_store), class: 'btn btn-success btn-block' %>
 
-<ul>
-  <% @query_store.accessors.each do |accessor| %>
-    <li>
-      <strong><%= accessor %>:</strong>
-      <%= @query_store.send(accessor) %>
-    </li>
+<hr>
+
+<div class="row">
+  <% @query_store.scope_klass.filter_attributes.each do |attribute| %>
+    <div class="col-sm-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <%= Patron::Utils::I18n.translate_filter(attribute, class_name: @query_store.name) %>
+          <strong>( <%= attribute %> ) </strong>
+        </div>
+
+        <div class="card-body">
+          <table class="table table-striped">
+            <tr class="table-success">
+              <th width="40%">
+                <%= Patron::Utils::I18n.translate_suffix('value') %>
+              </th>
+              <td>
+                <%= @query_store.send("#{attribute}_value") %>
+              </td>
+            </tr>
+            <tr class="table-primary">
+              <th>
+                <%= Patron::Utils::I18n.translate_suffix('query_type') %>
+              </th>
+              <td>
+                <%= Patron::Utils::I18n.translate_query_type(@query_store.send("#{attribute}_query_type")) %>
+              </td>
+            </tr>
+            <tr class="table-secondary">
+              <th>
+                <%= Patron::Utils::I18n.translate_suffix('skip_empty') %>
+              </th>
+              <td>
+                <%= Patron::Utils::I18n.translate_skip_empty(@query_store.send("#{attribute}_skip_empty")) %>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
   <% end %>
-</ul>
-
-<%= link_to 'Edit', edit_query_store_path(@query_store) %> |
-<%= link_to 'Back', query_stores_path %>
+</div>

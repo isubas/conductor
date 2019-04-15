@@ -3,7 +3,7 @@
 module Patron
   module Scope
     class Base
-      extend DSL::Filter
+      extend DSL
       extend View::Form
 
       def self.model

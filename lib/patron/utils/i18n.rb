@@ -6,7 +6,7 @@ module Patron
       module_function
 
       def translate_filter(name, class_name:)
-        translate(name, scope: [:patron, class_name])
+        translate(name, scope: [:patron, class_name.to_s.underscore])
       end
 
       def translate_suffix(name)
@@ -17,9 +17,13 @@ module Patron
         translate(name, scope: %i[patron query_types])
       end
 
+      def translate_skip_empty(name)
+        translate(name, scope: %i[patron boolean])
+      end
+
       def translate_collection_for_boolean(collection)
         [*collection].map do |item|
-          [translate(item, scope: %i[patron boolean]), item]
+          [translate_skip_empty(item), item]
         end
       end
 

@@ -2,12 +2,13 @@
 
 Rails.application.routes.draw do
   resources :roles
-  resources :permissions
-  resources :controller_actions
-  resources :query_stores
+  resources :permissions, only: %i[index show]
+  resources :query_stores do
+    get :preview, on: :member
+  end
+
   root 'home#index'
   resources :books
-  resources :actions
 
   get :dashboard, to: 'dashboard#index'
   devise_for :users

@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
 namespace :auth do
-  desc 'Create controller actions'
-  task create_actions: :environment do
-    routes = Rails.application.routes.routes.map(&:defaults).uniq
-    routes.each do |route|
-      next unless route.key? :controller
+  desc 'Upsert permissions'
+  task upsert_permissions: :environment do
+  end
 
-      ControllerAction.create(route)
-
-      puts "#{route[:controller]}##{route[:action]} created."
-    end
+  desc 'Upsert roles'
+  task create_roles: :environment do
   end
 end

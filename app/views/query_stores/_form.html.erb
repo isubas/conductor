@@ -1,9 +1,7 @@
 <%= simple_form_for query_store do |f| %>
-  <%= f.input :name, collection: Patron::Scope::Base.descendants %>
+  <%= f.input :name, as: :hidden, collection: f.object.name %>
   <%= f.association :user, label_method: :email %>
   <% query_store.scope_klass.fields_for_form.each do |field_group| %>
-
-
     <div class="card mb-2 px-3 py-3">
       <div class="row">
         <% field_group.each do |field| %>
