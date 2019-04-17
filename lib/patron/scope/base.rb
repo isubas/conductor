@@ -17,22 +17,26 @@ module Patron
         @current_scope = current_scope
       end
 
-      def scope(bypass: false)
-        return model.all if bypass
+      def scope(bypass: nil)
+        return model.all if bypass.nil? ? bypass? : bypass
 
         query = Query::Builder.call(self)
 
-        query.present? ? current_scope.where(query) : model.none
+        @current_scope = query.present? ? model.where(query) : model.none
+      end
+
+      def bypass?
+        false
       end
 
       protected
 
-      def model
-        @_model ||= self.class.model
+      def current_scope
+        @current_scope || scope || model
       end
 
-      def current_scope
-        @current_scope || model
+      def model
+        @_model ||= self.class.model
       end
     end
   end

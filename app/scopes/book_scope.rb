@@ -7,5 +7,9 @@ class BookScope < Patron::Scope::Base
 
   delegate :programs, to: :current_scope
 
-  preview_attributes :id, :name, :desc
+  preview_attributes :id, :name, :desc, program: :name
+
+  def bypass?
+    user.email == 'irfan.subas@uzem.omu.edu.tr'
+  end
 end

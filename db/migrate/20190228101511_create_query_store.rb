@@ -10,6 +10,6 @@ class CreateQueryStore < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :query_stores, %I[name user]
+    add_index :query_stores, %I[name user_id]
   end
 end

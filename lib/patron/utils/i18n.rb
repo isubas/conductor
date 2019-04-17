@@ -34,6 +34,8 @@ module Patron
       end
 
       def translate(name, **options)
+        return '' if name.blank?
+        
         ::I18n.translate(name, options)
       end
 

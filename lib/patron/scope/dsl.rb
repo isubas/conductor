@@ -4,7 +4,14 @@ module Patron
   module Scope
     module DSL
       def preview_attributes(*attributes)
-        @preview_attributes ||= (attributes.presence || filter_attributes)
+        @preview_attributes ||= begin
+          (attributes.presence || filter_attributes).each_with_object({}) do |item, hash|
+            case item
+            when Symbol, String then hash[item] = item
+            when Hash           then hash.merge!(item)
+            end
+          end
+        end
       end
 
       def filter(attribute, **options)

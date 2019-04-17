@@ -1,21 +1,26 @@
 <div class="alert alert-info" role="alert">
-  Gösterilecek Toplam Kayıt Sayısı: <strong><%= @collection.size %></strong>
+  <p>Gösterilecek Toplam Kayıt Sayısı: <strong><%= @collection.size %></strong></p>
+  <p>Es Geçme Durumu: <strong><%= @scope.bypass? %></strong></p>
 </div>
 
-<table class="table table-bordered">
-  <thead class="thead-dark">
-    <% @attributes.each do |attribute| %>
-      <th><%= attribute %></th>
-    <% end %>
-  </thead>
-
-  <tbody>
-    <% @collection.each do |item| %>
-      <tr>
-        <% @attributes.each do |attribute| %>
-          <td><%= item.public_send(attribute) %></td>
+<div class="card">
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <% @attributes.keys.each do |attribute| %>
+          <th><%= attribute %></th>
         <% end %>
-      <tr>
-    <% end %>
-  <tbody>
-</table>
+      </thead>
+
+      <tbody>
+        <% @collection.each do |item| %>
+          <tr>
+            <% @attributes.values.each do |attribute| %>
+              <td><%= item.public_send(attribute) %></td>
+            <% end %>
+          <tr>
+        <% end %>
+      <tbody>
+    </table>
+  </div>
+</div>

@@ -28,4 +28,8 @@ class QueryStore < ApplicationRecord
   def scope_for_preview
     scope_klass.new(user).scope
   end
+
+  def scope_instance
+    scope_klass.new(user)
+  end
 end
