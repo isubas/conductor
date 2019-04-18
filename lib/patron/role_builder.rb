@@ -1,45 +1,36 @@
 # frozen_string_literal: true
 
 module Patron
-  class RoleBuilder
-    def self.roles
+  module RoleBuilder
+    def roles
       @roles ||= {}
     end
 
-    def self.role(name, permissions:)
-      roles[name] = Role.new(name, permissions)
+    def role(identifier, name:, permissions:)
+      roles[identifier] = Role.new(
+        name: name,
+        identifier: identifier,
+        permissions: permissions
+      )
     end
 
     class Role
-      attr_reader :name, :permissions
+      attr_reader :identifier, :name, :permissions
 
-      def initialize(name, permissions)
+      def initialize(identifier:, name:, permissions:)
+        @identifier  = identifier
         @name        = name
-        @permissions = permissions
+        @permissions = Set.new(permissions)
         check!
-      end
-
-      def actions
-        permissions.each_with_object({}) do |permission, result|
-          controllers_of_permissions = Patron::PermissionBuilder.find(permission)
-
-          controllers_of_permissions.each do |controller, actions_of_controller|
-            result[controller] = Set.new unless result.key?(controller)
-            result[controller].merge(actions_of_controller)
-          end
-        end
-      end
-
-      def permitted?(controller, action)
-        actions.fetch(controller&.to_sym, [])
-               .include?(action&.to_sym)
       end
 
       private
 
       def check!
+        raise ArgumentError, 'Not empty permissions' if permissions.blank?
+
         permissions.each do |permission|
-          Patron::PermissionBuilder.exist!(permission)
+          raise ArgumentError, "Not found permission, #{permission}" unless PermissionBuilder.all.key?(permission)
         end
       end
     end

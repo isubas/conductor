@@ -10,7 +10,7 @@ module Patron
         end
 
         def self.call(instance)
-          new(instance).send(:build)
+          new(instance).public_send(:build)
         end
 
         private_class_method :new

@@ -43,19 +43,18 @@ ActiveRecord::Schema.define(version: 2019_03_15_133148) do
     t.text "parameters"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"name\", \"user\"", name: "index_query_stores_on_name_and_user"
+    t.index ["name", "user_id"], name: "index_query_stores_on_name_and_user_id"
     t.index ["user_id"], name: "index_query_stores_on_user_id"
   end
 
   create_table "role_assignments", force: :cascade do |t|
     t.integer "role_id"
-    t.string "rolable_type", null: false
-    t.integer "rolable_id", null: false
+    t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["rolable_type", "rolable_id", "role_id"], name: "role_assignments_rolable_role", unique: true
-    t.index ["rolable_type", "rolable_id"], name: "index_role_assignments_on_rolable_type_and_rolable_id"
     t.index ["role_id"], name: "index_role_assignments_on_role_id"
+    t.index ["user_id", "role_id"], name: "role_assignments_rolable_role", unique: true
+    t.index ["user_id"], name: "index_role_assignments_on_user_id"
   end
 
   create_table "role_permissions", force: :cascade do |t|
@@ -92,6 +91,7 @@ ActiveRecord::Schema.define(version: 2019_03_15_133148) do
 
   add_foreign_key "query_stores", "users"
   add_foreign_key "role_assignments", "roles"
+  add_foreign_key "role_assignments", "users"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
 end

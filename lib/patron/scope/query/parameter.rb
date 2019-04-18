@@ -14,7 +14,7 @@ module Patron
         end
 
         def to_arel_for(model)
-          Query::Arel.send(query_type, model, name, value) if assignable?
+          Query::Arel.public_send(query_type, model, name, value) if assignable?
         end
 
         private

@@ -9,15 +9,15 @@ class BookPolicy < ApplicationPolicy
   end
 
   def index?
-    user.book_manager?
+    permitted?
   end
 
   def show?
-    false
+    permitted?
   end
 
   def create?
-    false
+    permitted?
   end
 
   def new?
@@ -25,7 +25,7 @@ class BookPolicy < ApplicationPolicy
   end
 
   def update?
-    false
+    permitted?
   end
 
   def edit?
@@ -33,19 +33,12 @@ class BookPolicy < ApplicationPolicy
   end
 
   def destroy?
-    false
+    permitted?
   end
 
-  class Scope
-    attr_reader :user, :scope
+  private
 
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
-    def resolve
-      scope.all
-    end
+  def permitted?
+    user.permission? :book_manager
   end
 end

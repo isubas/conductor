@@ -25,7 +25,7 @@
                 <%= Patron::Utils::I18n.translate_suffix('value') %>
               </th>
               <td>
-                <%= @query_store.send("#{attribute}_value") %>
+                <%= @query_store.public_send("#{attribute}_value") %>
               </td>
             </tr>
             <tr class="table-primary">
@@ -33,7 +33,7 @@
                 <%= Patron::Utils::I18n.translate_suffix('query_type') %>
               </th>
               <td>
-                <%= Patron::Utils::I18n.translate_query_type(@query_store.send("#{attribute}_query_type")) %>
+                <%= Patron::Utils::I18n.translate_query_type(@query_store.public_send("#{attribute}_query_type")) %>
               </td>
             </tr>
             <tr class="table-secondary">
@@ -41,7 +41,7 @@
                 <%= Patron::Utils::I18n.translate_suffix('skip_empty') %>
               </th>
               <td>
-                <%= Patron::Utils::I18n.translate_skip_empty(@query_store.send("#{attribute}_skip_empty")) %>
+                <%= Patron::Utils::I18n.translate_skip_empty(@query_store.public_send("#{attribute}_skip_empty")) %>
               </td>
             </tr>
           </table>

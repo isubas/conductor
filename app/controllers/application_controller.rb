@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  # include Patron::Controller
-  before_action :authenticate_user!
+  include Pundit
 
-  # rescue_from Patron::Controller::NotAuthorizedError, with: :not_authorized
+  before_action :authenticate_user!
+  rescue_from Pundit::NotAuthorizedError, with: :not_authorized
 
   private
 
-  def not_authorized
-    flash[:notice] = 'Bu işlemi gerçekleştiremezsiniz. Yetkiniz yok.'
+  def not_authorized(exception)
+    policy_name = exception.policy.class.to_s.underscore
+
+    flash[:notice] = t "#{policy_name}.#{exception.query}", scope: 'pundit', default: :default
 
     redirect_back(fallback_location: root_path)
   end

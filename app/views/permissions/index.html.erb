@@ -14,7 +14,7 @@
         <td><%= permission.name %></td>
         <td><%= permission.identifier %></td>
         <td>
-          <%= link_to_actions(permission) %>
+          <%= link_to_actions(permission, except: %i[edit destroy]) %>
         </td>
       <% end %>
     </tbody>
