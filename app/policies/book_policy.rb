@@ -39,6 +39,6 @@ class BookPolicy < ApplicationPolicy
   private
 
   def permitted?
-    user.permission? :book_manager
+    user.permissions? :book_manager, :foo
   end
 end
